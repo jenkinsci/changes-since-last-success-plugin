@@ -24,11 +24,11 @@
       <version>1.424</version>
     </parent>
 
-    <artifactId>changelog</artifactId>
+    <artifactId>changes-since-last-success</artifactId>
     <packaging>hpi</packaging>
-    <name>Change Log Plugin</name>
-    <version>1.0-SNAPSHOT</version>
-    <url>http://wiki.jenkins-ci.org/display/JENKINS/Change+Log+Plugin</url>
+    <name>Changes since last successfull build Plugin</name>
+    <version>0.1-SNAPSHOT</version>
+    <url>http://wiki.jenkins-ci.org/display/JENKINS/Changes+Since+Last+Success+Plugin</url>
     <description>generate changelog for a range of builds</description>
 
     <developers>

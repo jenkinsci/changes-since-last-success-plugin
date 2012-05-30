@@ -91,11 +91,11 @@ public class ChangelogAction implements Action {
     }
 
     public String getDisplayName() {
-        return "Changelog";
+        return "Changes since last success";
     }
 
     public String getUrlName() {
-        return "changelog";
+        return "changes-since-last-success";
     }
 
     // FIXME no TransientBuildActionFactory to add an action to all builds ?
