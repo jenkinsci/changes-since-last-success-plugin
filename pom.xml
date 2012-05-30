@@ -12,7 +12,7 @@
   ~ Lesser General Public License for more details.
   ~
   ~ You should have received a copy of the GNU Lesser General Public
-  ~ along with this program; if not, see <http://www.gnu.org/licenses/>.
+  ~ along with this program; if not, see <http://www.gnu.org/licenses />.
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -27,7 +27,7 @@
     <artifactId>changes-since-last-success</artifactId>
     <packaging>hpi</packaging>
     <name>Changes since last successfull build Plugin</name>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Changes+Since+Last+Success+Plugin</url>
     <description>generate changelog for a range of builds</description>
 
