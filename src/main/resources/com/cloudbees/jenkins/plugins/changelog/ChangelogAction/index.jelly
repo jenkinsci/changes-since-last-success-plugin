@@ -19,8 +19,17 @@
     <l:layout title="Change Log for ${it.build.project.displayName} #${it.build.number}">
         <st:include page="sidepanel.jelly" it="${it.build}" />
         <l:main-panel>
-            <h2>${%Change Log}</h2>
-            TODO
+            <j:set var="range" value="${it.build.parent.lastStableBuild.number + 1}"/>
+            <j:if test="${buildNumber != null}"> <!-- user specified range -->
+              <j:set var="range" value="${buildNumber}"/>
+            </j:if>
+            <h2>Changelog since build #${range}</h2>
+            <j:forEach var="change" items="${it.getChanges(range)}">
+                <j:set var="b" value="${change.build}"/>
+                <img src="${rootUrl}/images/16x16/${b.buildStatusUrl}"/>
+                <a href="../../${b.number}">build #${b.number}</a> :
+                <st:include page="digest.jelly" it="${change}" />
+            </j:forEach>
         </l:main-panel>
     </l:layout>
 </j:jelly>

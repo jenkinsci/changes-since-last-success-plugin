@@ -22,11 +22,16 @@ import hudson.Launcher;
 import hudson.model.*;
 import hudson.model.listeners.RunListener;
 import hudson.scm.ChangeLogParser;
+import hudson.scm.ChangeLogSet;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author: <a hef="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
@@ -43,11 +48,41 @@ public class ChangelogAction implements Action {
         return build;
     }
 
-    public Object getDynamic(String buildNumber, StaplerRequest req, StaplerResponse rsp)
+    public int getRangeEndBuildNumber(StaplerRequest req) {
+        Integer buildNumber = (Integer) req.getAttribute("buildNumber");
+        if (buildNumber != null) return buildNumber.intValue();
+
+        // default to lastStable
+        return build.getProject().getLastStableBuild().getNumber();
+    }
+
+    public List<ChangeLogSet> getChanges(int buildNumber) {
+        List<ChangeLogSet> changes =  new LinkedList<ChangeLogSet>();
+        AbstractBuild b = build;
+        do {
+            changes.add(b.getChangeSet());
+            b = (AbstractBuild) b.getPreviousBuild();
+        }
+        while (b != null && b.getNumber() >= buildNumber);
+
+        return changes;
+    }
+
+    /**
+     * Handle rendering changelog for an arbitrary range
+     */
+    public Object getDynamic(String range, StaplerRequest req, StaplerResponse rsp)
             throws Exception {
 
-        // TODO compute changelog between current build and buildNumber
-        // TODO handle buildNumber == "lastSuccess"
+        int buildNumber;
+        if ("lastSuccess".equals(range)) {
+            buildNumber = build.getProject().getLastSuccessfulBuild().getNumber() + 1;
+        } else if ("lastStable".equals(range)) {
+            buildNumber = build.getProject().getLastStableBuild().getNumber() + 1;
+        }
+        else { buildNumber = Integer.parseInt(range); }
+
+        req.setAttribute("buildNumber", buildNumber);
         return this;
     }
 
