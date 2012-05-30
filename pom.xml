@@ -45,9 +45,9 @@
     </licenses>
 
     <scm>
-      <connection>scm:git:git://github.com/jenkinsci/changelog-plugin.git</connection>
-      <developerConnection>scm:git:git@github.com:jenkinsci/changelog-plugin.git</developerConnection>
-      <url>https://github.com/jenkinsci/changelog-plugin</url>
+      <connection>scm:git:git://github.com/jenkinsci/changes-since-last-success-plugin.git</connection>
+      <developerConnection>scm:git:git@github.com:jenkinsci/changes-since-last-success-plugin.git</developerConnection>
+      <url>https://github.com/jenkinsci/changes-since-last-success-plugin</url>
     </scm>
 
     <repositories>
