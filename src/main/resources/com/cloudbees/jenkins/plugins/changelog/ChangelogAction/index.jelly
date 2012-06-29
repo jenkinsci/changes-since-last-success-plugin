@@ -15,7 +15,7 @@
   ~ along with this program; if not, see <http://www.gnu.org/licenses/>.
   -->
 
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
     <l:layout title="Change Log for ${it.build.project.displayName} #${it.build.number}">
         <st:include page="sidepanel.jelly" it="${it.build}" />
         <l:main-panel>

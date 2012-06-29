@@ -28,10 +28,8 @@ import org.kohsuke.stapler.StaplerResponse;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author: <a hef="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
@@ -79,6 +77,18 @@ public class ChangelogAction implements Action {
             buildNumber = build.getProject().getLastSuccessfulBuild().getNumber() + 1;
         } else if ("lastStable".equals(range)) {
             buildNumber = build.getProject().getLastStableBuild().getNumber() + 1;
+        } else if ("since".equals(range)) {
+            String date = req.getParameter("date");
+            String format = req.hasParameter("format") ? req.getParameter("format") : "ddMMyyyyhhmmss";
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(new SimpleDateFormat(format).parse(date));
+            Run r = build;
+            buildNumber = r.getNumber();
+            while (r != null && r.getTimestamp().after(c)) {
+                buildNumber = r.getNumber();
+                r = r.getPreviousBuild();
+            }
         }
         else { buildNumber = Integer.parseInt(range); }
 
