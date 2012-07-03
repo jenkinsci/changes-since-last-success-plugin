@@ -15,21 +15,38 @@
   ~ along with this program; if not, see <http://www.gnu.org/licenses/>.
   -->
 
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout" xmlns:fmt="jelly:fmt">
     <l:layout title="Change Log for ${it.build.project.displayName} #${it.build.number}">
         <st:include page="sidepanel.jelly" it="${it.build}" />
         <l:main-panel>
-            <j:set var="range" value="${it.build.parent.lastStableBuild.number + 1}"/>
-            <j:if test="${buildNumber != null}"> <!-- user specified range -->
-              <j:set var="range" value="${buildNumber}"/>
+            <j:if test="${buildNumber == null}"> <!-- user specified range -->
+                <j:set var="buildNumber" value="${it.build.parent.lastStableBuild.number + 1}"/>
             </j:if>
-            <h2>Changelog since build #${range}</h2>
-            <j:forEach var="change" items="${it.getChanges(range)}">
-                <j:set var="b" value="${change.build}"/>
-                <img src="${rootUrl}/images/16x16/${b.buildStatusUrl}"/>
-                <a href="../../${b.number}">build #${b.number}</a> :
-                <st:include page="digest.jelly" it="${change}" />
+            <j:choose>
+                <j:when test="${range == 'lastStable'}">
+                    <h2>Changes since last stable build</h2>
+                </j:when>
+                <j:when test="${range == 'since'}">
+                    <h2>Changes since <fmt:formatDate value="${since.time}" type="both" dateStyle="medium" timeStyle="medium"/></h2>
+                </j:when>
+                <j:when test="${range.length() > 0}">
+                    <h2>Changes since build #${buildNumber}</h2>
+                </j:when>
+                <j:otherwise>
+                    <h2>Changes since last successful build</h2>
+                </j:otherwise>
+            </j:choose>
+
+            <ul>
+            <j:forEach var="change" items="${it.getChanges(buildNumber)}">
+                <li>
+                    <j:set var="b" value="${change.build}"/>
+                    <img src="${rootUrl}/images/16x16/${b.buildStatusUrl}"/>
+                    <a href="../../${b.number}">build #${b.number}</a> :
+                    <st:include page="digest.jelly" it="${change}" />
+                </li>
             </j:forEach>
+            </ul>
         </l:main-panel>
     </l:layout>
 </j:jelly>

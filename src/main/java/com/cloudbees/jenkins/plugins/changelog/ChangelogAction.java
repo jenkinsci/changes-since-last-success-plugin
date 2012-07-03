@@ -57,11 +57,11 @@ public class ChangelogAction implements Action {
     public List<ChangeLogSet> getChanges(int buildNumber) {
         List<ChangeLogSet> changes =  new LinkedList<ChangeLogSet>();
         AbstractBuild b = build;
-        do {
+        while (b != null && b.getNumber() >= buildNumber) {
             changes.add(b.getChangeSet());
             b = (AbstractBuild) b.getPreviousBuild();
         }
-        while (b != null && b.getNumber() >= buildNumber);
+
 
         return changes;
     }
@@ -83,6 +83,7 @@ public class ChangelogAction implements Action {
 
             Calendar c = Calendar.getInstance();
             c.setTime(new SimpleDateFormat(format).parse(date));
+            req.setAttribute("since", c);
             Run r = build;
             buildNumber = r.getNumber();
             while (r != null && r.getTimestamp().after(c)) {
@@ -92,6 +93,7 @@ public class ChangelogAction implements Action {
         }
         else { buildNumber = Integer.parseInt(range); }
 
+        req.setAttribute("range", range);
         req.setAttribute("buildNumber", buildNumber);
         return this;
     }
