@@ -79,7 +79,7 @@ public class ChangelogAction implements Action {
             buildNumber = build.getProject().getLastStableBuild().getNumber() + 1;
         } else if ("since".equals(range)) {
             String date = req.getParameter("date");
-            String format = req.hasParameter("format") ? req.getParameter("format") : "ddMMyyyyhhmmss";
+            String format = req.hasParameter("format") ? req.getParameter("format") : "ddMMyyyyHHmmss";
 
             Calendar c = Calendar.getInstance();
             c.setTime(new SimpleDateFormat(format).parse(date));
