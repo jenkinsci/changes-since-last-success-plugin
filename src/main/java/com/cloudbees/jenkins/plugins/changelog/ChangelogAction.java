@@ -72,7 +72,7 @@ public class ChangelogAction implements Action {
     public Object getDynamic(String range, StaplerRequest req, StaplerResponse rsp)
             throws Exception {
 
-        int buildNumber;
+        int buildNumber = Integer.MAX_VALUE;
         if ("lastSuccess".equals(range)) {
             buildNumber = build.getProject().getLastSuccessfulBuild().getNumber() + 1;
         } else if ("lastStable".equals(range)) {
@@ -85,7 +85,6 @@ public class ChangelogAction implements Action {
             c.setTime(new SimpleDateFormat(format).parse(date));
             req.setAttribute("since", c);
             Run r = build;
-            buildNumber = r.getNumber();
             while (r != null && r.getTimestamp().after(c)) {
                 buildNumber = r.getNumber();
                 r = r.getPreviousBuild();
