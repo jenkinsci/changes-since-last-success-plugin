@@ -38,7 +38,11 @@
             </j:choose>
 
             <ul>
-            <j:forEach var="change" items="${it.getChanges(buildNumber)}">
+            <j:set var="changes" value="${it.getChanges(buildNumber)}"/>
+            <j:if test="${empty changes}">
+                Nothing to display
+            </j:if>
+            <j:forEach var="change" items="${changes}">
                 <li>
                     <j:set var="b" value="${change.build}"/>
                     <img src="${rootUrl}/images/16x16/${b.buildStatusUrl}"/>
