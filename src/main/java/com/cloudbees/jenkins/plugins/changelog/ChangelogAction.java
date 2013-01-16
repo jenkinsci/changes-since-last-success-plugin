@@ -18,16 +18,11 @@
 package com.cloudbees.jenkins.plugins.changelog;
 
 import hudson.Extension;
-import hudson.Launcher;
 import hudson.model.*;
 import hudson.model.listeners.RunListener;
-import hudson.scm.ChangeLogParser;
-import hudson.scm.ChangeLogSet;
 import org.kohsuke.stapler.StaplerRequest;
-import org.kohsuke.stapler.StaplerResponse;
 
-import java.io.File;
-import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -54,47 +49,30 @@ public class ChangelogAction implements Action {
         return build.getProject().getLastStableBuild().getNumber();
     }
 
-    public List<ChangeLogSet> getChanges(int buildNumber) {
-        List<ChangeLogSet> changes =  new LinkedList<ChangeLogSet>();
-        AbstractBuild b = build;
-        while (b != null && b.getNumber() >= buildNumber) {
-            changes.add(b.getChangeSet());
-            b = (AbstractBuild) b.getPreviousBuild();
-        }
-
-
-        return changes;
+    public Changes getLastSuccess() {
+        int buildNumber = build.getProject().getLastSuccessfulBuild().getNumber() + 1;
+        return new Changes(build, buildNumber);
     }
 
-    /**
-     * Handle rendering changelog for an arbitrary range
-     */
-    public Object getDynamic(String range, StaplerRequest req, StaplerResponse rsp)
-            throws Exception {
+    public Changes getLastStable() {
+        int buildNumber = build.getProject().getLastStableBuild().getNumber() + 1;
+        return new Changes(build, buildNumber);
+    }
 
+    public Changes getBuildNumber(String buildNumber) {
+        return new Changes(build, Integer.parseInt(buildNumber));
+    }
+
+    public Changes getSince(String date) throws ParseException {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(date));
+        Run r = build;
         int buildNumber = Integer.MAX_VALUE;
-        if ("lastSuccess".equals(range)) {
-            buildNumber = build.getProject().getLastSuccessfulBuild().getNumber() + 1;
-        } else if ("lastStable".equals(range)) {
-            buildNumber = build.getProject().getLastStableBuild().getNumber() + 1;
-        } else if ("since".equals(range)) {
-            String date = req.getParameter("date");
-            String format = req.hasParameter("format") ? req.getParameter("format") : "ddMMyyyyHHmmss";
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(new SimpleDateFormat(format).parse(date));
-            req.setAttribute("since", c);
-            Run r = build;
-            while (r != null && r.getTimestamp().after(c)) {
-                buildNumber = r.getNumber();
-                r = r.getPreviousBuild();
-            }
+        while (r != null && r.getTimestamp().after(c)) {
+            buildNumber = r.getNumber();
+            r = r.getPreviousBuild();
         }
-        else { buildNumber = Integer.parseInt(range); }
-
-        req.setAttribute("range", range);
-        req.setAttribute("buildNumber", buildNumber);
-        return this;
+        return new Changes(build, buildNumber);
     }
 
     public String getIconFileName() {

@@ -19,24 +19,19 @@
     <l:layout title="Change Log for ${it.build.project.displayName} #${it.build.number}">
         <st:include page="sidepanel.jelly" it="${it.build}" />
         <l:main-panel>
-            Changes since ...
             <ul>
+            <j:set var="changes" value="${it.changes}"/>
+            <j:if test="${empty changes}">
+                Nothing to display
+            </j:if>
+            <j:forEach var="change" items="${changes}">
                 <li>
-                    <a href="lastSuccess">last successful build</a>
+                    <j:set var="b" value="${change.build}"/>
+                    <img src="${rootUrl}/images/16x16/${b.buildStatusUrl}"/>
+                    <a href="../../${b.number}">build #${b.number}</a> :
+                    <st:include page="digest.jelly" it="${change}" />
                 </li>
-                <li>
-                    <a href="lastStable">last stable build</a>
-                </li>
-                <li>
-                    <a id="since" href="since/${it.build.timestampString2}">a specified date (yyyy-MM-dd)</a>
-                    <input type="date" value="${it.build.timestampString2}"
-                           onchange="document.getElementById('since').href='since/'+this.value"/>
-                </li>
-                <li>
-                    <a id="buildNumber" href="buildNumber/${it.build.number}">a specified build number</a>
-                    <input type="number" min="${it.build.parent.firstBuild.number}" max="${it.build.parent.lastBuild.number}" value="${it.build.number}"
-                           onchange="document.getElementById('buildNumber').href='buildNumber/'+this.value"/>
-                </li>
+            </j:forEach>
             </ul>
         </l:main-panel>
     </l:layout>
