@@ -41,22 +41,20 @@ public class ChangelogAction implements Action {
         return build;
     }
 
-    public int getRangeEndBuildNumber(StaplerRequest req) {
-        Integer buildNumber = (Integer) req.getAttribute("buildNumber");
-        if (buildNumber != null) return buildNumber.intValue();
-
-        // default to lastStable
-        return build.getProject().getLastStableBuild().getNumber();
-    }
-
     public Changes getLastSuccess() {
-        int buildNumber = build.getProject().getLastSuccessfulBuild().getNumber() + 1;
-        return new Changes(build, buildNumber);
+        Run r = build.getPreviousBuild();
+        while (r != null
+                && (r.getResult() == null || r.getResult().isWorseThan(Result.UNSTABLE)))
+            r = r.getPreviousBuild();
+        return new Changes(build, r != null ? r.getNumber() + 1 : build.getNumber());
     }
 
     public Changes getLastStable() {
-        int buildNumber = build.getProject().getLastStableBuild().getNumber() + 1;
-        return new Changes(build, buildNumber);
+        Run r = build.getPreviousBuild();
+        while (r != null
+                && (r.getResult() == null || r.getResult().isWorseThan(Result.SUCCESS)))
+            r = r.getPreviousBuild();
+        return new Changes(build, r != null ? r.getNumber() + 1 : build.getNumber());
     }
 
     public Changes getBuildNumber(String buildNumber) {
