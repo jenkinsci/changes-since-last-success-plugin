@@ -26,7 +26,7 @@
 
     <artifactId>changes-since-last-success</artifactId>
     <packaging>hpi</packaging>
-    <name>Changes since last successfull build Plugin</name>
+    <name>Changes since last successful build Plugin</name>
     <version>0.6-SNAPSHOT</version>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Changes+Since+Last+Success+Plugin</url>
     <description>generate changelog for a range of builds</description>
