@@ -50,6 +50,17 @@
       <url>https://github.com/jenkinsci/changes-since-last-success-plugin</url>
     </scm>
 
+    <distributionManagement>
+      <repository>
+        <id>maven.jenkins-ci.org</id>
+        <url>https://repo.jenkins-ci.org/releases/</url>
+      </repository>
+      <snapshotRepository>
+        <id>maven.jenkins-ci.org</id>
+        <url>https://repo.jenkins-ci.org/snapshots/</url>
+      </snapshotRepository>
+    </distributionManagement>
+ 
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>
