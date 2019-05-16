@@ -31,6 +31,10 @@
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Changes+Since+Last+Success+Plugin</url>
     <description>generate changelog for a range of builds</description>
 
+	<properties>
+	    <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+	</properties>
+	
     <developers>
       <developer>
         <id>ndeloof</id>
