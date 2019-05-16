@@ -27,7 +27,7 @@
     <artifactId>changes-since-last-success</artifactId>
     <packaging>hpi</packaging>
     <name>Changes since last successful build Plugin</name>
-    <version>0.7-SNAPSHOT</version>
+    <version>0.6-SNAPSHOT</version>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Changes+Since+Last+Success+Plugin</url>
     <description>generate changelog for a range of builds</description>
 
@@ -52,8 +52,7 @@
       <connection>scm:git:git://github.com/jenkinsci/changes-since-last-success-plugin.git</connection>
       <developerConnection>scm:git:git@github.com:jenkinsci/changes-since-last-success-plugin.git</developerConnection>
       <url>https://github.com/jenkinsci/changes-since-last-success-plugin</url>
-      <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <distributionManagement>
       <repository>
